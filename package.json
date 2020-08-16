@@ -1,6 +1,6 @@
 {
   "name": "formify-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Last form component you will need for you application which works with only a JSON you pass rest it will handle everything",
   "keywords": [
     "reactjs",
