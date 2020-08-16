@@ -19,6 +19,8 @@
 
 ```bash
 npm i -S formify-react
+
+yarn add formify-react
 ```
 
 ## Usage
