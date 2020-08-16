@@ -9,7 +9,9 @@
 [Props](#Props) \
 [Example Form Field](#Model) \
 [Form Fields](#Fields) \
-[Supported Input Fields](#Supported)
+[Supported Input Fields](#Supported) \
+[Validators](#Validators) \
+[Upcoming](#Upcoming)
 
 ## Install
 
@@ -27,6 +29,14 @@ import 'formify-react/dist/index.css'
 
 import { formConstants } from './config'
 
+const budgetData = [
+  { value: 5000, label: '$5000' },
+  { value: 15000, label: '$15000' },
+  { value: 25000, label: '$25000' },
+  { value: 35000, label: '$35000' },
+  { value: 50000, label: '$50000' }
+]
+
 class Example extends Component {
   formRef = createRef()
 
@@ -41,7 +51,11 @@ class Example extends Component {
   render() {
     return (
       <div>
-        <Form model={formConstants} ref={formRef} data={{ budget: [] }} />
+        <Form
+          model={formConstants}
+          ref={this.formRef}
+          data={{ budget: budgetData }}
+        />
         <button onClick={this.handleSave}>Save</button>
       </div>
     )
@@ -123,20 +137,35 @@ export const formConstants = [
 | placeholder | This field used to display placeholder in the field                                                                                             | String                                                                                                 | ''      | No       |
 | extraProps  | This field is used to send any extra html attributes to field                                                                                   | Object                                                                                                 | {}      | No       |
 
+> For Dropdown Data format should be an array of {value:'', label:'',}
+
 ## Supported
 
-| Input    | Value      |
-| -------- | ---------- |
-| Text     | `text`     |
-| Email    | `email`    |
-| Password | `password` |
-| URL      | `url`      |
-| Search   | `search`   |
-| Number   | `number`   |
-| Dropdown | `dropdown` |
-| Checkbox | `checkbox` |
+| Input    | Value      | Sample Data                   |
+| -------- | ---------- | ----------------------------- |
+| Text     | `text`     |                               |
+| Email    | `email`    |                               |
+| Password | `password` |                               |
+| URL      | `url`      |                               |
+| Search   | `search`   |                               |
+| Number   | `number`   |                               |
+| Dropdown | `dropdown` | {value:'test', label:'Test',} |
+| Checkbox | `checkbox` |                               |
 
 > These values will be used in type field of form model
+
+## Validators
+
+`import { Validators } from 'formify-react'`
+
+- {check: Validators.required, message: 'This field is required'}
+- {check: Validators.email, message: 'Email is invalid'}
+- {check: Validators.number, message: 'Only number allowed'}
+
+## Upcoming
+
+- Dropdown with MultiSelect and Autocomplete
+- More Validation methods
 
 ## License
 
