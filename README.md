@@ -81,7 +81,7 @@ class Example extends Component {
 
 ## Model
 
-```
+```js
 import { Validators } from 'formify-react'
 
 export const formConstants = [
