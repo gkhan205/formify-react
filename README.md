@@ -2,7 +2,7 @@
 
 > Last form component you will need for you application which works with only a JSON you pass rest it will handle everything
 
-[![NPM](https://img.shields.io/npm/v/formify-react.svg)](https://www.npmjs.com/package/formify-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/formify-react.svg)](https://www.npmjs.com/package/formify-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![License](https://img.shields.io/npm/l/formify-react)](https://github.com/gkhan205/formify-react/blob/master/LICENSE) [![Bundle Size](https://img.shields.io/bundlephobia/min/formify-react)](https://www.npmjs.com/package/formify-react)
 
 [Installation](#Install) \
 [Usage](#Usage) \
@@ -11,15 +11,18 @@
 [Form Fields](#Fields) \
 [Supported Input Fields](#Supported) \
 [Validators](#Validators) \
-[Upcoming](#Upcoming)
+[Upcoming](#Upcoming) \
+[Contribution](#Contribution)
 
 [![Edit formify-react](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/formify-react-v9pkv?fontsize=14&hidenavigation=1&theme=dark)
 
 ## Install
 
 ```bash
+#npm
 npm i -S formify-react
 
+#yarn
 yarn add formify-react
 ```
 
