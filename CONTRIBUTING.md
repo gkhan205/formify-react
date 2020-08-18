@@ -12,3 +12,8 @@
 **After your pull request is merged**
 
 After your pull request is merged, you can safely delete your branch.
+
+# Branch Naming
+- Feature - feature/feature-name(or issue number)
+- Bug - bugfix/bug-name(or issue number)
+- Hotfix - hotfix/hotfix-name(or issue number)
