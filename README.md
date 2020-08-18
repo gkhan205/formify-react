@@ -171,6 +171,10 @@ export const formConstants = [
 - Dropdown with MultiSelect and Autocomplete
 - More Validation methods
 
+## Contribution
+
+[Contributing Info](./CONTRIBUTING.md)
+
 ## License
 
 MIT © [gkhan205](https://github.com/gkhan205)
