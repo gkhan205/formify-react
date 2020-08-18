@@ -12,7 +12,7 @@
 [Supported Input Fields](#Supported) \
 [Validators](#Validators) \
 [Upcoming](#Upcoming) \
-[Contribution](#Contribution)
+[Contributing](#Contribution)
 
 [![Edit formify-react](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/formify-react-v9pkv?fontsize=14&hidenavigation=1&theme=dark)
 
