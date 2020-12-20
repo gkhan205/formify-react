@@ -13,6 +13,14 @@ const budgetData = [
   { value: 50000, label: '$50000' }
 ]
 
+const animalData = [
+  { value: 'Bear', label: 'Bear' },
+  { value: 'Fox', label: 'Fox' },
+  { value: 'Cat', label: 'Cat' },
+  { value: 'Dog', label: 'Dog' },
+  { value: 'Mouse', label: 'Mouse' }
+]
+
 export default class App extends Component {
   formRef = createRef()
 
@@ -30,7 +38,7 @@ export default class App extends Component {
         <Form
           model={formConstants}
           ref={this.formRef}
-          data={{ budget: budgetData }}
+          data={{ budget: budgetData, animals: animalData }}
         />
         <button onClick={this.handleSave}>Save</button>
       </div>
