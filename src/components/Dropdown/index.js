@@ -3,10 +3,21 @@ import PropTypes from 'prop-types'
 
 import mainStyles from '../../styles.module.css'
 
-const Dropdown = ({ value, label, field, data, placeholder, onChange }) => {
+const Dropdown = ({ value, label, field, data, placeholder, onChange, isMulti }) => {
   const handleChange = (event) => {
-    const { value } = event.target
-    onChange(value, field)
+    if (isMulti) {
+      const { options } = event.target
+      const value = []
+
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].selected) value.push(options[i].value)
+      }
+
+      onChange(value, field)
+    } else {
+      const { value } = event.target
+      onChange(value, field)
+    }
   }
 
   return (
@@ -16,8 +27,12 @@ const Dropdown = ({ value, label, field, data, placeholder, onChange }) => {
         value={value}
         className={mainStyles.formControl}
         onChange={handleChange}
+        multiple={isMulti}
       >
-        <option value=''>{placeholder ? placeholder : 'Select a value'}</option>
+        {
+          !isMulti &&
+          <option value=''>{placeholder ? placeholder : 'Select a value'}</option>
+        }
         {data.map((item, key) => (
           <option key={key} value={item.value}>
             {item.label}
@@ -29,12 +44,13 @@ const Dropdown = ({ value, label, field, data, placeholder, onChange }) => {
 }
 
 Dropdown.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   placeholder: PropTypes.string,
   data: PropTypes.array,
   label: PropTypes.string,
   field: PropTypes.string,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  isMulti: PropTypes.bool
 }
 
 Dropdown.defaultProps = {
@@ -42,7 +58,8 @@ Dropdown.defaultProps = {
   placeholder: '',
   label: '',
   field: '',
-  data: []
+  data: [],
+  isMulti: false
 }
 
 export default Dropdown
