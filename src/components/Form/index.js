@@ -35,6 +35,8 @@ export default class Form extends Component {
     model.forEach((item) => {
       if (item.type === 'checkbox') {
         formData[item.field] = values[item.field] ? values[item.field] : false
+      } else if (item.type === 'multi-dropdown') {
+        formData[item.field] = values[item.field] ? values[item.field] : []
       } else {
         formData[item.field] = values[item.field] ? values[item.field] : ''
       }
@@ -126,6 +128,21 @@ export default class Form extends Component {
                 label={field.title}
                 placeholder={field.placeholder}
                 onChange={this.handleChange}
+              />
+            </div>
+          )
+          break
+        case 'multi-dropdown':
+          domArray.push(
+            <div key={index} className={`form-group ${field.styleClass}`}>
+              <Dropdown
+                field={field.field}
+                value={formData[field.field] || []}
+                data={data[field.field]}
+                label={field.title}
+                placeholder={field.placeholder}
+                onChange={this.handleChange}
+                isMulti
               />
             </div>
           )

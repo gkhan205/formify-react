@@ -25,6 +25,14 @@ export const formConstants = [
     styleClass: 'col-sm-6'
   },
   {
+    field: 'animals',
+    type: 'multi-dropdown',
+    validators: [],
+    required: false,
+    title: 'Pick your favorite animals',
+    styleClass: 'col-sm-12'
+  },
+  {
     field: 'message',
     type: 'textarea',
     validators: [],
