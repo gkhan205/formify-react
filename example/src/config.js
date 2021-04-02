@@ -1,10 +1,18 @@
 import { Validators } from 'formify-react'
 
+const checkGhazi = (value, message) => {
+  if(value && value.includes('ghazi')) {
+    return false;
+  } 
+  return {error: true, message};
+}
+
 export const formConstants = [
   {
     field: 'email',
     type: 'email',
     validators: [
+      {check: checkGhazi, message: 'Text does not contain Ghazi'},
       { check: Validators.required, message: 'Email is mandatory' },
       { check: Validators.email, message: 'Email entered is not valid' }
     ],
