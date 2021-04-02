@@ -10,7 +10,11 @@
     "dynamic-form-component",
     "react-component"
   ],
-  "author": "gkhan205",
+  "author": {
+    "name": "Ghazi Khan",
+    "email": "hey@codewithghazi.com",
+    "url": "www.codewithghazi.com"
+  },
   "license": "MIT",
   "repository": "gkhan205/formify-react",
   "main": "dist/index.js",

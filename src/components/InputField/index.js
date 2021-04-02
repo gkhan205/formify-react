@@ -11,7 +11,7 @@ const InputField = ({
   placeholder,
   validators,
   type,
-  onChange
+  onChange,
   extraProps
 }) => {
   const [error, setError] = useState(false)
