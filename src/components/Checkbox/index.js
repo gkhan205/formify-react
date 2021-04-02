@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import mainStyles from '../../styles.module.css'
 
-const Checkbox = ({ label, field, selected, styleClass, onChange }) => {
+const Checkbox = ({ label, field, selected, styleClass, onChange, extraProps }) => {
   const handleChange = (event) => {
     const { checked } = event.target
     onChange(checked, field)
@@ -18,6 +18,7 @@ const Checkbox = ({ label, field, selected, styleClass, onChange }) => {
           value={selected}
           defaultChecked={selected}
           onChange={handleChange}
+          {...extraProps}
         />
 
         {label}
@@ -29,6 +30,7 @@ const Checkbox = ({ label, field, selected, styleClass, onChange }) => {
 Checkbox.propTypes = {
   field: PropTypes.string,
   styleClass: PropTypes.string,
+  extraProps: PropTypes.object,
   selected: PropTypes.bool.isRequired,
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired
@@ -36,7 +38,8 @@ Checkbox.propTypes = {
 
 Checkbox.defaultProps = {
   styleClass: '',
-  field: ''
+  field: '',
+  extraProps: {}
 }
 
 export default Checkbox

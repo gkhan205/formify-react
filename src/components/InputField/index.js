@@ -12,6 +12,7 @@ const InputField = ({
   validators,
   type,
   onChange
+  extraProps
 }) => {
   const [error, setError] = useState(false)
 
@@ -31,6 +32,7 @@ const InputField = ({
           placeholder={placeholder}
           value={value}
           onChange={handleChange}
+          {...extraProps}
         />
       ) : (
         <input
@@ -39,6 +41,7 @@ const InputField = ({
           className={mainStyles.formControl}
           placeholder={placeholder}
           onChange={handleChange}
+          {...extraProps}
         />
       )}
       {error && (
@@ -55,6 +58,7 @@ InputField.propTypes = {
   validators: PropTypes.array,
   type: PropTypes.string,
   field: PropTypes.string,
+  extraProps: PropTypes.object,
   onChange: PropTypes.func.isRequired
 }
 
@@ -64,7 +68,8 @@ InputField.defaultProps = {
   placeholder: '',
   type: 'text',
   field: '',
-  validators: []
+  validators: [],
+  extraProps: {}
 }
 
 export default InputField

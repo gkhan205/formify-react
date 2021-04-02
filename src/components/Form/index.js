@@ -112,6 +112,7 @@ export default class Form extends Component {
                 validators={field.validators}
                 type={field.type}
                 onChange={this.handleChange}
+                extraProps={field.extraProps}
               />
             </div>
           )
@@ -126,6 +127,7 @@ export default class Form extends Component {
                 label={field.title}
                 placeholder={field.placeholder}
                 onChange={this.handleChange}
+                extraProps={field.extraProps}
               />
             </div>
           )
@@ -138,6 +140,7 @@ export default class Form extends Component {
                 label={field.title}
                 selected={formData[field.field] ? formData[field.field] : false}
                 onChange={this.handleChange}
+                extraProps={field.extraProps}
               />
             </div>
           )

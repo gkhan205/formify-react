@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import mainStyles from '../../styles.module.css'
 
-const Dropdown = ({ value, label, field, data, placeholder, onChange }) => {
+const Dropdown = ({ value, label, field, data, placeholder, onChange, extraProps }) => {
   const handleChange = (event) => {
     const { value } = event.target
     onChange(value, field)
@@ -16,6 +16,7 @@ const Dropdown = ({ value, label, field, data, placeholder, onChange }) => {
         value={value}
         className={mainStyles.formControl}
         onChange={handleChange}
+        {...extraProps}
       >
         <option value=''>{placeholder ? placeholder : 'Select a value'}</option>
         {data.map((item, key) => (
@@ -34,6 +35,7 @@ Dropdown.propTypes = {
   data: PropTypes.array,
   label: PropTypes.string,
   field: PropTypes.string,
+  extraProps: PropTypes.object,
   onChange: PropTypes.func.isRequired
 }
 
@@ -42,7 +44,8 @@ Dropdown.defaultProps = {
   placeholder: '',
   label: '',
   field: '',
-  data: []
+  data: [],
+  extraProps: {}
 }
 
 export default Dropdown
