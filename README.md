@@ -192,8 +192,8 @@ validators: [
 
 ## Upcoming
 
-[x] Custom Validation methods
-[] Dropdown with MultiSelect and Autocomplete
+- [x] Custom Validation methods
+- [ ] Dropdown with MultiSelect and Autocomplete
 
 
 ## Contribution
