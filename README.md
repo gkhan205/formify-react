@@ -169,10 +169,32 @@ export const formConstants = [
 - {check: Validators.email, message: 'Email is invalid'}
 - {check: Validators.number, message: 'Only number allowed'}
 
+> You can now send custom validator to the form component
+
+```js
+/*
+  Custom Validator
+  @params: value -> received value from inputs
+  @params: message -> message which you will add while sending in the validators array of form component
+*/
+const checkGhazi = (value, message) => {
+  if(value && value.includes('ghazi')) {
+    return false;
+  } 
+  return {error: true, message};
+}
+
+// Add your custom validator function to validators array of the form constant.
+validators: [
+  {check: checkGhazi, message: 'Text does not contain Ghazi'},
+],
+```
+
 ## Upcoming
 
-- Dropdown with MultiSelect and Autocomplete
-- More Validation methods
+[x] Custom Validation methods
+[] Dropdown with MultiSelect and Autocomplete
+
 
 ## Contribution
 
