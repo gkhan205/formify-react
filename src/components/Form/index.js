@@ -102,6 +102,7 @@ export default class Form extends Component {
         case 'textarea':
         case 'password':
         case 'url':
+        case 'date':
           domArray.push(
             <div key={index} className={`form-group ${field.styleClass}`}>
               <InputField
