@@ -30,7 +30,7 @@ export default class Form extends Component {
 
   createFormData() {
     const { model, values } = this.props
-    let formData = {}
+    const formData = {}
 
     model.forEach((item) => {
       if (item.type === 'checkbox') {
@@ -39,6 +39,8 @@ export default class Form extends Component {
         formData[item.field] = values[item.field] ? values[item.field] : ''
       }
       formData[item.field + 'Error'] = item.required
+        ? !!values[item.field]
+        : false
     })
 
     this.setState({
