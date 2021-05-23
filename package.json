@@ -1,6 +1,6 @@
 {
   "name": "formify-react",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "description": "Last form component you will need for you application which works with only a JSON you pass rest it will handle everything",
   "keywords": [
     "reactjs",
@@ -29,8 +29,7 @@
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
     "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build",
-    "publish": "npm publish --access=public"
+    "deploy": "gh-pages -d example/build"
   },
   "peerDependencies": {
     "react": "^16.0.0"
