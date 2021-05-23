@@ -38,9 +38,15 @@ export default class Form extends Component {
       } else {
         formData[item.field] = values[item.field] ? values[item.field] : ''
       }
-      formData[item.field + 'Error'] = item.required
-        ? !!values[item.field]
-        : false
+
+      if (item.required) {
+        formData[item.field + 'Error'] =
+          values.hasOwnProperty(item.field) && values[item.field] !== ''
+            ? false
+            : true
+      } else {
+        formData[item.field + 'Error'] = false
+      }
     })
 
     this.setState({
@@ -89,6 +95,11 @@ export default class Form extends Component {
 
   resetForm = () => {
     this.createFormData()
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault()
+    this.props.onSubmit(this.getFormData())
   }
 
   renderFormInput() {
@@ -157,7 +168,11 @@ export default class Form extends Component {
   }
 
   render() {
-    return <div className='form-container row'>{this.renderFormInput()}</div>
+    return (
+      <div className='form-container row'>
+        <form onSubmit={this.handleSubmit}>{this.renderFormInput()}</form>
+      </div>
+    )
   }
 }
 
@@ -165,11 +180,13 @@ Form.propTypes = {
   model: PropTypes.array.isRequired,
   data: PropTypes.object,
   values: PropTypes.object,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  onSubmit: PropTypes.func
 }
 
 Form.defaultProps = {
   data: {},
   values: {},
-  onChange: () => {}
+  onChange: () => {},
+  onSubmit: () => {}
 }

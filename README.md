@@ -55,6 +55,12 @@ class Example extends Component {
     }
   }
 
+  handleSubmit = ({ formData, isFormValid }) => {
+    if (isFormValid) {
+      console.log(formData)
+    }
+  }
+
   render() {
     return (
       <div>
@@ -62,6 +68,7 @@ class Example extends Component {
           model={formConstants}
           ref={this.formRef}
           data={{ budget: budgetData }}
+          onSubmit={this.handleSubmit}
         />
         <button onClick={this.handleSave}>Save</button>
       </div>
@@ -72,15 +79,18 @@ class Example extends Component {
 
 > `getFormData()` returns an object of {isFormValid, formData}. Same object will be returned if you use `onChange` function to get latest change while you update any field. `getFormData` is only be accessible when you use ref.
 
+> New Update:- Now you can pass onSubmit callback function to enable native form submit (with pressing enter);
+
 ## Props
 
-| Property | Description                                                                          | Type      | Default | Required |
-| -------- | ------------------------------------------------------------------------------------ | --------- | ------- | -------- |
-| model    | Form model array with all fields                                                     | Array     |         | Yes      |
-| ref      | Ref to get access to Form DOM Ref                                                    | React Ref |         | No       |
-| data     | Object of dropdown data with field name of dropdown field                            | Object    | {}      | No       |
-| values   | Object of all fields in forms with values to be populated in form                    | Object    | {}      | No       |
-| onChange | This is an optional callback if you need to get form values when an input is changed | Function  |         | No       |
+| Property | Description                                                                                              | Type      | Default | Required |
+| -------- | -------------------------------------------------------------------------------------------------------- | --------- | ------- | -------- |
+| model    | Form model array with all fields                                                                         | Array     |         | Yes      |
+| ref      | Ref to get access to Form DOM Ref                                                                        | React Ref |         | No       |
+| data     | Object of dropdown data with field name of dropdown field                                                | Object    | {}      | No       |
+| values   | Object of all fields in forms with values to be populated in form                                        | Object    | {}      | No       |
+| onChange | This is an optional callback if you need to get form values when an input is changed                     | Function  |         | No       |
+| onSubmit | This is an optional callback if you need to get form values when pressed enter to submit to your service | Function  |         | No       |
 
 ## Model
 
@@ -158,6 +168,7 @@ export const formConstants = [
 | Number   | `number`   |                               |
 | Dropdown | `dropdown` | {value:'test', label:'Test',} |
 | Checkbox | `checkbox` |                               |
+| Date     | `date`     |                               |
 
 > These values will be used in type field of form model
 
@@ -180,7 +191,7 @@ export const formConstants = [
 const checkGhazi = (value, message) => {
   if(value && value.includes('ghazi')) {
     return false;
-  } 
+  }
   return {error: true, message};
 }
 
@@ -194,7 +205,6 @@ validators: [
 
 - [x] Custom Validation methods
 - [ ] Dropdown with MultiSelect and Autocomplete
-
 
 ## Contribution
 

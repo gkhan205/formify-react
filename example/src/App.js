@@ -24,6 +24,11 @@ export default class App extends Component {
     }
   }
 
+  handleSubmit = ({ formData, isFormValid }) => {
+    console.log(isFormValid)
+    console.log(formData)
+  }
+
   render() {
     return (
       <div className='container'>
@@ -31,6 +36,7 @@ export default class App extends Component {
           model={formConstants}
           ref={this.formRef}
           data={{ budget: budgetData }}
+          onSubmit={this.handleSubmit}
         />
         <button onClick={this.handleSave}>Save</button>
       </div>
