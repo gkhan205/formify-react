@@ -18,8 +18,7 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
+      - run: npm install -g @jsdevtools/npm-publish
       - run: npm install
-      - run: npm publish --access public
+      - run: npm-publish --access public --token=${{secrets.NODE_AUTH_TOKEN}}
       - run: npm run deploy
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
