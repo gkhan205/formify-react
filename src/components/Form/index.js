@@ -15,12 +15,6 @@ export default class Form extends Component {
     this.createFormData()
   }
 
-  componentDidUpdate(prevProps){
-    if(JSON.stringify(this.props.values) === JSON.stringify(prevProps.values)) {
-      this.createFormData()
-    }
-  }
-
   checkValidation(formData) {
     const { model } = this.props
     let isFormValid = true
