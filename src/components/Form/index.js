@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { isEqual } from 'lodash'
 
 import InputField from '../InputField'
 import Dropdown from '../Dropdown'
@@ -13,6 +14,12 @@ export default class Form extends Component {
 
   componentDidMount() {
     this.createFormData()
+  }
+
+  componentDidUpdate(prevProps) {
+    if(!isEqual(this.props.values, prevProps.values)) {
+      this.createFormData()
+    }
   }
 
   checkValidation(formData) {
