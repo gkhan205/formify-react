@@ -1,6 +1,33 @@
 import React, { useState, Component } from 'react';
 import { isEqual } from 'lodash';
 
+function _extends() {
+  _extends = Object.assign ? Object.assign.bind() : function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
+  return _extends.apply(this, arguments);
+}
+function _inheritsLoose(subClass, superClass) {
+  subClass.prototype = Object.create(superClass.prototype);
+  subClass.prototype.constructor = subClass;
+  _setPrototypeOf(subClass, superClass);
+}
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+  return _setPrototypeOf(o, p);
+}
+
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
@@ -333,12 +360,14 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 var ReactPropTypesSecret_1 = ReactPropTypesSecret;
 
+var has = Function.call.bind(Object.prototype.hasOwnProperty);
+
 var printWarning = function() {};
 
 if (process.env.NODE_ENV !== 'production') {
   var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
   var loggedTypeFailures = {};
-  var has = Function.call.bind(Object.prototype.hasOwnProperty);
+  var has$1 = has;
 
   printWarning = function(text) {
     var message = 'Warning: ' + text;
@@ -350,7 +379,7 @@ if (process.env.NODE_ENV !== 'production') {
       // This error was thrown as a convenience so that you can use this stack
       // to find the callsite that caused this warning to fire.
       throw new Error(message);
-    } catch (x) {}
+    } catch (x) { /**/ }
   };
 }
 
@@ -368,7 +397,7 @@ if (process.env.NODE_ENV !== 'production') {
 function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
   if (process.env.NODE_ENV !== 'production') {
     for (var typeSpecName in typeSpecs) {
-      if (has(typeSpecs, typeSpecName)) {
+      if (has$1(typeSpecs, typeSpecName)) {
         var error;
         // Prop type validation may throw. In case they do, we don't want to
         // fail the render phase where it didn't fail before. So we log it.
@@ -379,7 +408,8 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
           if (typeof typeSpecs[typeSpecName] !== 'function') {
             var err = Error(
               (componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' +
-              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.'
+              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.' +
+              'This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`.'
             );
             err.name = 'Invariant Violation';
             throw err;
@@ -427,7 +457,6 @@ checkPropTypes.resetWarningCache = function() {
 
 var checkPropTypes_1 = checkPropTypes;
 
-var has$1 = Function.call.bind(Object.prototype.hasOwnProperty);
 var printWarning$1 = function() {};
 
 if (process.env.NODE_ENV !== 'production') {
@@ -528,6 +557,7 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
   // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
   var ReactPropTypes = {
     array: createPrimitiveTypeChecker('array'),
+    bigint: createPrimitiveTypeChecker('bigint'),
     bool: createPrimitiveTypeChecker('boolean'),
     func: createPrimitiveTypeChecker('function'),
     number: createPrimitiveTypeChecker('number'),
@@ -573,8 +603,9 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
    * is prohibitively expensive if they are created too often, such as what
    * happens in oneOfType() for any type before the one that matched.
    */
-  function PropTypeError(message) {
+  function PropTypeError(message, data) {
     this.message = message;
+    this.data = data && typeof data === 'object' ? data: {};
     this.stack = '';
   }
   // Make `instanceof Error` still work for returned errors.
@@ -609,7 +640,7 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
           ) {
             printWarning$1(
               'You are manually calling a React.PropTypes validation ' +
-              'function for the `' + propFullName + '` prop on `' + componentName  + '`. This is deprecated ' +
+              'function for the `' + propFullName + '` prop on `' + componentName + '`. This is deprecated ' +
               'and will throw in the standalone `prop-types` package. ' +
               'You may be seeing this warning due to a third-party PropTypes ' +
               'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
@@ -648,7 +679,10 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
         // 'of type `object`'.
         var preciseType = getPreciseType(propValue);
 
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'));
+        return new PropTypeError(
+          'Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'),
+          {expectedType: expectedType}
+        );
       }
       return null;
     }
@@ -762,7 +796,7 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
         return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
       }
       for (var key in propValue) {
-        if (has$1(propValue, key)) {
+        if (has(propValue, key)) {
           var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
           if (error instanceof Error) {
             return error;
@@ -792,14 +826,19 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
     }
 
     function validate(props, propName, componentName, location, propFullName) {
+      var expectedTypes = [];
       for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
         var checker = arrayOfTypeCheckers[i];
-        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret_1) == null) {
+        var checkerResult = checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret_1);
+        if (checkerResult == null) {
           return null;
         }
+        if (checkerResult.data && has(checkerResult.data, 'expectedType')) {
+          expectedTypes.push(checkerResult.data.expectedType);
+        }
       }
-
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`.'));
+      var expectedTypesMessage = (expectedTypes.length > 0) ? ', expected one of type [' + expectedTypes.join(', ') + ']': '';
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`' + expectedTypesMessage + '.'));
     }
     return createChainableTypeChecker(validate);
   }
@@ -814,6 +853,13 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
     return createChainableTypeChecker(validate);
   }
 
+  function invalidValidatorError(componentName, location, propFullName, key, type) {
+    return new PropTypeError(
+      (componentName || 'React class') + ': ' + location + ' type `' + propFullName + '.' + key + '` is invalid; ' +
+      'it must be a function, usually from the `prop-types` package, but received `' + type + '`.'
+    );
+  }
+
   function createShapeTypeChecker(shapeTypes) {
     function validate(props, propName, componentName, location, propFullName) {
       var propValue = props[propName];
@@ -823,8 +869,8 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
       }
       for (var key in shapeTypes) {
         var checker = shapeTypes[key];
-        if (!checker) {
-          continue;
+        if (typeof checker !== 'function') {
+          return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
         }
         var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
         if (error) {
@@ -843,16 +889,18 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
       if (propType !== 'object') {
         return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
       }
-      // We need to check all keys in case some are required but missing from
-      // props.
+      // We need to check all keys in case some are required but missing from props.
       var allKeys = objectAssign({}, props[propName], shapeTypes);
       for (var key in allKeys) {
         var checker = shapeTypes[key];
+        if (has(shapeTypes, key) && typeof checker !== 'function') {
+          return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
+        }
         if (!checker) {
           return new PropTypeError(
             'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
             '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
-            '\nValid keys: ' +  JSON.stringify(Object.keys(shapeTypes), null, '  ')
+            '\nValid keys: ' + JSON.stringify(Object.keys(shapeTypes), null, '  ')
           );
         }
         var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
@@ -1028,6 +1076,7 @@ var factoryWithThrowingShims = function() {
   // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
   var ReactPropTypes = {
     array: shim,
+    bigint: shim,
     bool: shim,
     func: shim,
     number: shim,
@@ -1078,96 +1127,86 @@ if (process.env.NODE_ENV !== 'production') {
 }
 });
 
-const regex = {
+var regex = {
   email: new RegExp('^(([^<>()\\[\\]\\\\.,;:\\s@]+(\\.[^<>()\\[\\]\\\\.,;:\\s@]+)*)|(.+))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$'),
   number: new RegExp('^[0-9]+$')
 };
-class Validators {
-  static email(value, message) {
+var Validators = /*#__PURE__*/function () {
+  function Validators() {}
+  Validators.email = function email(value, message) {
     if (value) {
-      const result = regex.email.test(value);
+      var result = regex.email.test(value);
       if (!result) return {
         error: true,
-        message
+        message: message
       };
     }
-  }
-
-  static required(value, message) {
+  };
+  Validators.required = function required(value, message) {
     if (!value || !value.toString().trim().length) {
       return {
         error: true,
-        message
+        message: message
       };
     }
-
     return false;
-  }
-
-  static number(value, message) {
-    const length = value ? value.toString().length : 0;
-
+  };
+  Validators.number = function number(value, message) {
+    var length = value ? value.toString().length : 0;
     if (length > 0) {
-      const result = regex.number.test(value);
-
+      var result = regex.number.test(value);
       if (!result) {
         return {
           error: true,
-          message
+          message: message
         };
       }
     }
-
     return false;
-  }
-
-}
-const validateInput = (validators, value) => {
+  };
+  return Validators;
+}();
+var validateInput = function validateInput(validators, value) {
   if (validators && validators.length) {
-    for (let i = 0; i < validators.length; i++) {
-      const error = validators[i].check(value, validators[i].message);
-
+    for (var i = 0; i < validators.length; i++) {
+      var error = validators[i].check(value, validators[i].message);
       if (error) {
         return error;
       }
     }
   }
-
   return false;
 };
 
-var mainStyles = {"formGroup":"_styles-module__formGroup__3CEBj","formControl":"_styles-module__formControl__1vyEq","inValidMessage":"_styles-module__inValidMessage__30ta7"};
+var mainStyles = {"formGroup":"_3CEBj","formControl":"_1vyEq","inValidMessage":"_30ta7"};
 
-const InputField = ({
-  value,
-  label,
-  field,
-  placeholder,
-  validators,
-  type,
-  onChange,
-  extraProps
-}) => {
-  const [error, setError] = useState(false);
-
-  const handleChange = event => {
-    const {
-      value
-    } = event.target;
+var InputField = function InputField(_ref) {
+  var value = _ref.value,
+    label = _ref.label,
+    field = _ref.field,
+    placeholder = _ref.placeholder,
+    validators = _ref.validators,
+    type = _ref.type,
+    onChange = _ref.onChange,
+    extraProps = _ref.extraProps;
+  var _useState = useState(false),
+    error = _useState[0],
+    setError = _useState[1];
+  var handleChange = function handleChange(event) {
+    var value = event.target.value;
     setError(validateInput(validators, value));
     onChange(value, field, error);
   };
-
   return /*#__PURE__*/React.createElement("div", {
     className: mainStyles.formGroup
   }, label && /*#__PURE__*/React.createElement("label", {
     htmlFor: "app-input-field"
-  }, label), type === 'textarea' ? /*#__PURE__*/React.createElement("textarea", Object.assign({
+  }, label), type === 'textarea' ? /*#__PURE__*/React.createElement("textarea", _extends({
     className: mainStyles.formControl,
     placeholder: placeholder,
     value: value,
     onChange: handleChange
-  }, extraProps)) : /*#__PURE__*/React.createElement("input", Object.assign({
+  }, extraProps)) : /*#__PURE__*/React.createElement("input", _extends({
     type: type,
     value: value,
     className: mainStyles.formControl,
@@ -1177,7 +1216,6 @@ const InputField = ({
     className: mainStyles.inValidMessage
   }, error.message));
 };
-
 InputField.propTypes = {
   value: propTypes.string,
   label: propTypes.string,
@@ -1198,38 +1236,35 @@ InputField.defaultProps = {
   extraProps: {}
 };
 
-const Dropdown = ({
-  value,
-  label,
-  field,
-  data,
-  placeholder,
-  onChange,
-  extraProps
-}) => {
-  const handleChange = event => {
-    const {
-      value
-    } = event.target;
+var Dropdown = function Dropdown(_ref) {
+  var value = _ref.value,
+    label = _ref.label,
+    field = _ref.field,
+    data = _ref.data,
+    placeholder = _ref.placeholder,
+    onChange = _ref.onChange,
+    extraProps = _ref.extraProps;
+  var handleChange = function handleChange(event) {
+    var value = event.target.value;
     onChange(value, field);
   };
-
   return /*#__PURE__*/React.createElement("div", {
     className: mainStyles.formGroup
   }, label && /*#__PURE__*/React.createElement("label", {
     htmlFor: "app-dropdown-field"
-  }, label), /*#__PURE__*/React.createElement("select", Object.assign({
+  }, label), /*#__PURE__*/React.createElement("select", _extends({
     value: value,
     className: mainStyles.formControl,
     onChange: handleChange
   }, extraProps), /*#__PURE__*/React.createElement("option", {
     value: ""
-  }, placeholder ? placeholder : 'Select a value'), data.map((item, key) => /*#__PURE__*/React.createElement("option", {
-    key: key,
-    value: item.value
-  }, item.label))));
+  }, placeholder ? placeholder : 'Select a value'), data.map(function (item, key) {
+    return /*#__PURE__*/React.createElement("option", {
+      key: key,
+      value: item.value
+    }, item.label);
+  })));
 };
-
 Dropdown.propTypes = {
   value: propTypes.string,
   placeholder: propTypes.string,
@@ -1248,24 +1283,19 @@ Dropdown.defaultProps = {
   extraProps: {}
 };
 
-const Checkbox = ({
-  label,
-  field,
-  selected,
-  styleClass,
-  onChange,
-  extraProps
-}) => {
-  const handleChange = event => {
-    const {
-      checked
-    } = event.target;
+var Checkbox = function Checkbox(_ref) {
+  var label = _ref.label,
+    field = _ref.field,
+    selected = _ref.selected,
+    onChange = _ref.onChange,
+    extraProps = _ref.extraProps;
+  var handleChange = function handleChange(event) {
+    var checked = event.target.checked;
     onChange(checked, field);
   };
-
   return /*#__PURE__*/React.createElement("div", {
     className: mainStyles.formGroup
-  }, /*#__PURE__*/React.createElement("label", null, /*#__PURE__*/React.createElement("input", Object.assign({
+  }, /*#__PURE__*/React.createElement("label", null, /*#__PURE__*/React.createElement("input", _extends({
     type: "checkbox",
     className: "mr-2",
     value: selected,
@@ -1273,7 +1303,6 @@ const Checkbox = ({
     onChange: handleChange
   }, extraProps)), label));
 };
-
 Checkbox.propTypes = {
   field: propTypes.string,
   styleClass: propTypes.string,
@@ -1288,79 +1317,76 @@ Checkbox.defaultProps = {
   extraProps: {}
 };
 
-class Form extends Component {
-  constructor(...args) {
-    super(...args);
-    this.state = {
+var Form = /*#__PURE__*/function (_Component) {
+  _inheritsLoose(Form, _Component);
+  function Form() {
+    var _this;
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+    _this.state = {
       formData: {},
       isFormValid: false
     };
-
-    this.handleChange = (value, field, error = false) => {
-      const clonedFormData = { ...this.state.formData
-      };
+    _this.handleChange = function (value, field, error) {
+      if (error === void 0) {
+        error = false;
+      }
+      var clonedFormData = _extends({}, _this.state.formData);
       clonedFormData[field] = value;
       clonedFormData[field + 'Error'] = error && error.error;
-      this.setState({
+      _this.setState({
         formData: clonedFormData,
-        isFormValid: this.checkValidation(clonedFormData)
-      }, () => {
-        if (this.props.onChange) {
-          this.props.onChange(this.createValueToSend());
+        isFormValid: _this.checkValidation(clonedFormData)
+      }, function () {
+        if (_this.props.onChange) {
+          _this.props.onChange(_this.createValueToSend());
         }
       });
     };
-
-    this.getFormData = () => {
-      return this.createValueToSend();
+    _this.getFormData = function () {
+      return _this.createValueToSend();
     };
-
-    this.resetForm = () => {
-      this.createFormData();
+    _this.resetForm = function () {
+      _this.createFormData();
     };
-
-    this.handleSubmit = event => {
+    _this.handleSubmit = function (event) {
       event.preventDefault();
-      this.props.onSubmit(this.getFormData());
+      _this.props.onSubmit(_this.getFormData());
     };
+    return _this;
   }
-
-  componentDidMount() {
+  var _proto = Form.prototype;
+  _proto.componentDidMount = function componentDidMount() {
     this.createFormData();
-  }
-
-  componentDidUpdate(prevProps) {
+  };
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
     if (!isEqual(this.props.values, prevProps.values)) {
       this.createFormData();
     }
-  }
-
-  checkValidation(formData) {
-    const {
-      model
-    } = this.props;
-    let isFormValid = true;
-    model.forEach(item => {
+  };
+  _proto.checkValidation = function checkValidation(formData) {
+    var model = this.props.model;
+    var isFormValid = true;
+    model.forEach(function (item) {
       if (item.required) {
         isFormValid = isFormValid && !formData[item.field + 'Error'];
       }
     });
     return isFormValid;
-  }
-
-  createFormData() {
-    const {
-      model,
-      values
-    } = this.props;
-    const formData = {};
-    model.forEach(item => {
+  };
+  _proto.createFormData = function createFormData() {
+    var _this$props = this.props,
+      model = _this$props.model,
+      values = _this$props.values;
+    var formData = {};
+    model.forEach(function (item) {
       if (item.type === 'checkbox') {
         formData[item.field] = values[item.field] ? values[item.field] : false;
       } else {
         formData[item.field] = values[item.field] ? values[item.field] : '';
       }
-
       if (item.required) {
         formData[item.field + 'Error'] = values.hasOwnProperty(item.field) && values[item.field] !== '' ? false : true;
       } else {
@@ -1368,40 +1394,33 @@ class Form extends Component {
       }
     });
     this.setState({
-      formData,
+      formData: formData,
       isFormValid: this.checkValidation(formData)
     });
-  }
-
-  createValueToSend() {
-    const {
-      formData,
-      isFormValid
-    } = this.state;
-    const data = {};
-
-    for (let key in formData) {
+  };
+  _proto.createValueToSend = function createValueToSend() {
+    var _this$state = this.state,
+      formData = _this$state.formData,
+      isFormValid = _this$state.isFormValid;
+    var data = {};
+    for (var key in formData) {
       if (!key.includes('Error')) {
         data[key] = formData[key];
       }
     }
-
     return {
       formData: data,
-      isFormValid
+      isFormValid: isFormValid
     };
-  }
-
-  renderFormInput() {
-    const {
-      model,
-      data
-    } = this.props;
-    const {
-      formData
-    } = this.state;
-    let domArray = [];
-    model.forEach((field, index) => {
+  };
+  _proto.renderFormInput = function renderFormInput() {
+    var _this2 = this;
+    var _this$props2 = this.props,
+      model = _this$props2.model,
+      data = _this$props2.data;
+    var formData = this.state.formData;
+    var domArray = [];
+    model.forEach(function (field, index) {
       switch (field.type) {
         case 'text':
         case 'email':
@@ -1412,7 +1431,7 @@ class Form extends Component {
         case 'date':
           domArray.push( /*#__PURE__*/React.createElement("div", {
             key: index,
-            className: `form-group ${field.styleClass}`
+            className: "form-group " + field.styleClass
           }, /*#__PURE__*/React.createElement(InputField, {
             value: formData[field.field],
             field: field.field,
@@ -1420,52 +1439,49 @@ class Form extends Component {
             placeholder: field.placeholder,
             validators: field.validators,
             type: field.type,
-            onChange: this.handleChange,
+            onChange: _this2.handleChange,
             extraProps: field.extraProps
           })));
           break;
-
         case 'dropdown':
           domArray.push( /*#__PURE__*/React.createElement("div", {
             key: index,
-            className: `form-group ${field.styleClass}`
+            className: "form-group " + field.styleClass
           }, /*#__PURE__*/React.createElement(Dropdown, {
             field: field.field,
             value: formData[field.field],
             data: data[field.field],
             label: field.title,
             placeholder: field.placeholder,
-            onChange: this.handleChange,
+            onChange: _this2.handleChange,
             extraProps: field.extraProps
           })));
           break;
-
         case 'checkbox':
           domArray.push( /*#__PURE__*/React.createElement("div", {
             key: index,
-            className: `form-group ${field.styleClass}`
+            className: "form-group " + field.styleClass
           }, /*#__PURE__*/React.createElement(Checkbox, {
             field: field.field,
             label: field.title,
             selected: formData[field.field] ? formData[field.field] : false,
-            onChange: this.handleChange,
+            onChange: _this2.handleChange,
             extraProps: field.extraProps
           })));
           break;
       }
     });
     return domArray;
-  }
-
-  render() {
+  };
+  _proto.render = function render() {
     return /*#__PURE__*/React.createElement("form", {
       onSubmit: this.handleSubmit
     }, /*#__PURE__*/React.createElement("div", {
       className: "form-container row"
     }, this.renderFormInput()));
-  }
-
-}
+  };
+  return Form;
+}(Component);
 Form.propTypes = {
   model: propTypes.array.isRequired,
   data: propTypes.object,
@@ -1476,8 +1492,8 @@ Form.propTypes = {
 Form.defaultProps = {
   data: {},
   values: {},
-  onChange: () => {},
-  onSubmit: () => {}
+  onChange: function onChange() {},
+  onSubmit: function onSubmit() {}
 };
 
 export default Form;
